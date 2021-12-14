@@ -2,6 +2,7 @@ package com.test.automation.common.framework;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -125,6 +126,10 @@ public class Waits {
 					return checkClick(element);
 				}
 			});
+			return true;
+		}catch(StaleElementReferenceException e) {
+			
+		
 			return true;
 			
 		}catch (TimeoutException e) {

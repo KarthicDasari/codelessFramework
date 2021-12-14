@@ -6,7 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.xpath.XPathExpression;
+
 import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Action;
 import org.openqa.selenium.interactions.Actions;
@@ -25,8 +28,11 @@ import com.test.automation.repository.CommonRepo;
 
 public class PageProcess {
 
+	static String xPathExpression1 = null;
+	
 	public static WebElement findElement(SeHelper se, String sheetName, String key, String value,
 			String xPathExpression) {
+		xPathExpression1 = xPathExpression;
 		Class<?> objClass = null;
 		WebElement element = null;
 
@@ -301,7 +307,7 @@ public class PageProcess {
 
 				} else {
 					element.clear();
-					element.sendKeys(value);
+					element.sendKeys(value, Keys.TAB);
 				}
 			} catch (NoSuchElementException e) {
 				se.log().error(e.getClass().getSimpleName() + " encountered when accessing \"" + key + "\"", e);
@@ -438,6 +444,32 @@ public class PageProcess {
 			}
 
 			break;
+			
+		case "div":
+			try {
+				if (value.equalsIgnoreCase("Click")) {
+//					se.element().Click(element);
+					 element.click();
+				} else if (value.equalsIgnoreCase("jsClick")) {
+				
+					JavascriptExecutor executor = (JavascriptExecutor) se.driver();
+					executor.executeScript("arguments[0].click();", element);
+
+				} else {
+					element.click();
+					element.sendKeys(value, Keys.TAB);
+				}
+			} catch (StaleElementReferenceException e) {
+				se.driver().findElement(By.xpath(xPathExpression1)).click();
+//				String javascript = "document.querySelector('"+element+"')";  
+//				JavascriptExecutor jsExecutor = (JavascriptExecutor) se.driver();  
+//				WebElement ele = (WebElement) jsExecutor.executeScript(javascript); 
+				
+				
+			} 
+
+			break;
+
 		default:
 			ActionBasedOnValue(se, element, value);
 

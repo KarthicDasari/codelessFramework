@@ -6,8 +6,11 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="VM_Framework_Base" />
+        <module name="VMFramework" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="VMFramework" target="13" />
+    </bytecodeTargetLevel>
   </component>
 </project>
